@@ -27,5 +27,5 @@ def solve(input):
 assert solve(testInput) == testResult
 
 with open('day1/input.txt', 'r') as file:
-   print(solve(file.read()))
+    print(solve(file.read()))
 
