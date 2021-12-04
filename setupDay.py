@@ -9,7 +9,7 @@ def main():
     
     day = sys.argv[1]
     
-    Path(f'day{day}').mkdir(exist_ok=True)
+    Path(f'day{day}').mkdir()
     for part in [1, 2]:
         with Path(f'day{day}/part{part}.py').open('w') as file:
             file.write(f'''\
