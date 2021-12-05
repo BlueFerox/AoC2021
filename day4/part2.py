@@ -63,12 +63,10 @@ def solve(input):
                 if hasWon(bfield.field):
                     winningFields.append(picked * sum(sum(bn.n for bn in line if not bn.marked) for line in bfield.field))
                     bfield.hasWon = True
-                    print(bfield.field)
     return winningFields.pop()
 
 assert solve(testInput) == testResult
 
 with open('day4/input.txt', 'r') as file:
     print(solve(file.read()))
-    pass
 

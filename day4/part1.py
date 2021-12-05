@@ -55,5 +55,4 @@ assert solve(testInput) == testResult
 
 with open('day4/input.txt', 'r') as file:
     print(solve(file.read()))
-    pass
 
