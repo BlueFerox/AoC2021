@@ -1,8 +1,7 @@
 # Advent of Code, Day 6, Part 1
 
 from collections import Counter, defaultdict
-from functools import reduce
-from typing import Dict, List
+from typing import Dict
 
 
 testInput = '''\
@@ -10,25 +9,27 @@ testInput = '''\
 '''
 testResult = 5934
 
-def nextDay(lanternSchool: Dict[int, int]):
-    nextLanternSchool = defaultdict(lambda: 0)
+def nextDay(fishes: Dict[int, int]):
+    nextFishes = defaultdict(lambda: 0)
 
-    for fishAge in lanternSchool.keys():
-        if fishAge == 0:
-            nextLanternSchool[8] += lanternSchool[0]
-            nextLanternSchool[6] += lanternSchool[0]
+    for n in fishes.keys():
+        if n == 0:
+            nextFishes[8] += fishes[0]
+            nextFishes[6] += fishes[0]
         else:
-            nextLanternSchool[fishAge - 1] += lanternSchool[fishAge]
-    return nextLanternSchool
+            nextFishes[n - 1] += fishes[n]
+    return nextFishes
 
 def solve(input: str) -> int:
-    lanternSchool = Counter(int(line.strip()) for line in input.split(',') if line != '')
+    fishes: Dict[int, int] = Counter(
+        int(line.strip())
+        for line
+        in input.split(',')
+        if line != '')
 
-    print(f'Initial state: {lanternSchool.items()}')
-    for day in range(80):
-        lanternSchool = nextDay(lanternSchool)
-        print(f'Day {day+1}: {lanternSchool.items()}')
-    return sum(lanternSchool.values())
+    for _ in range(80):
+        fishes = nextDay(fishes)
+    return sum(fishes.values())
 
 assert solve(testInput) == testResult
 

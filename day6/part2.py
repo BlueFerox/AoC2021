@@ -22,13 +22,15 @@ def nextDay(lanternSchool: Dict[int, int]):
     return nextLanternSchool
 
 def solve(input: str) -> int:
-    lanternSchool = Counter(int(line.strip()) for line in input.split(',') if line != '')
+    fishes: Dict[int, int] = Counter(
+        int(line.strip())
+        for line
+        in input.split(',')
+        if line != '')
 
-    #print(f'Initial state: {lanternSchool.items()}')
-    for day in range(256):
-        lanternSchool = nextDay(lanternSchool)
-        #print(f'Day {day+1}: {lanternSchool.items()}')
-    return sum(lanternSchool.values())
+    for _ in range(256):
+        fishes = nextDay(fishes)
+    return sum(fishes.values())
 
 assert solve(testInput) == testResult
 

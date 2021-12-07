@@ -22,7 +22,17 @@ Coord = Tuple[int, ...]
 Vent = Tuple[Coord, ...]
 
 def parse(input: str) -> List[Vent]:
-    return [tuple(tuple(int(n) for n in coord.split(',')) for coord in line.split(' -> ')) for line in input.split('\n') if line != '']
+    return [
+        tuple(
+            tuple(
+                int(n)
+                for n
+                in coord.split(','))
+            for coord
+            in line.split(' -> '))
+        for line
+        in input.split('\n')
+        if line != '']
 
 def isHorizontalOrVertical(vent: Vent) -> bool:
     return vent[0][0] == vent[1][0] or vent[0][1] == vent[1][1]
@@ -31,11 +41,26 @@ def sign(x: int) -> int:
     return -1 if x < 0 else (1 if x > 0 else 0)
 
 def pointsBetween(vent: Vent) -> List[Coord]:
-    direction = (sign(vent[1][0] - vent[0][0]), sign(vent[1][1] - vent[0][1]))
-    return [(vent[0][0] + direction[0] * i, vent[0][1] + direction[1] * i) for i in range(max(abs(vent[0][0] - vent[1][0]), abs(vent[0][1] - vent[1][1])) + 1)]
+    direction = (sign(vent[1][0] - vent[0][0]),
+        sign(vent[1][1] - vent[0][1]))
+    return [
+        (vent[0][0] + direction[0] * i, vent[0][1] + direction[1] * i)
+        for i
+        in range(max(
+            abs(vent[0][0] - vent[1][0]),
+            abs(vent[0][1] - vent[1][1])) + 1)]
 
 def solve(input: str) -> int:
-    return sum(1 for count in Counter(chain(*[pointsBetween(vent) for vent in parse(input) if isHorizontalOrVertical(vent)])).values() if count >= 2)
+    return sum(
+        1
+        for count
+        in Counter(chain(*[
+            pointsBetween(vent)
+            for vent
+            in parse(input)
+            if isHorizontalOrVertical(vent)]))
+                .values()
+        if count >= 2)
 
 assert solve(testInput) == testResult
 

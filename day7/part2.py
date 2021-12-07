@@ -5,16 +5,21 @@ testInput = '''\
 '''
 testResult = 168
 
-def fuelFunc(n: int) -> int:
-    return sum(range(1, n+1))
+def tri(a: int, b: int) -> int:
+    n = abs(a - b)
+    return (n*(n+1)) // 2
 
 def solve(input):
-    crabSubs = [int(line.strip()) for line in input.split(',') if line != '']
+    crabs = [
+        int(line.strip())
+        for line
+        in input.split(',')
+        if line != '']
 
-    fuel = list(enumerate(sum(fuelFunc(abs(n - crabSub)) for crabSub in crabSubs) for n in range(min(crabSubs), max(crabSubs)))).sort(key = lambda x: x[1])
-
-    print(fuel)
-    return 168
+    return min(
+        sum(tri(n, crab) for crab in crabs)
+        for n
+        in range(min(crabs), max(crabs) + 1))
 
 assert solve(testInput) == testResult
 

@@ -8,10 +8,17 @@ testInput = '''\
 testResult = 37
 
 def solve(input):
-    crabSubs = [int(line.strip()) for line in input.split(',') if line != '']
-    horizontalPos = int(median(crabSubs))
-    fuel = sum(abs(horizontalPos - crabSub) for crabSub in crabSubs)
-    return fuel
+    crabs = [
+        int(line.strip())
+        for line
+        in input.split(',')
+        if line != '']
+
+    return sum(
+        abs(int(median(crabs)) - crabSub) 
+        for crabSub
+        in crabs)
+
 assert solve(testInput) == testResult
 
 with open('day7/input.txt', 'r') as file:
