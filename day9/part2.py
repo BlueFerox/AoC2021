@@ -56,7 +56,10 @@ def solve(input):
                             nearestLowpoint[(i, j)] = nearestLowpoint[adj]
                             updateOccured = True
 
-    return reduce(mul, [size for _, size in Counter(nearestLowpoint.values()).most_common(3)], 1)
+    return reduce(
+        mul,
+        [size for _, size in Counter(nearestLowpoint.values()).most_common(3)],
+        1)
 
 
 
