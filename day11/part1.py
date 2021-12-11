@@ -1,9 +1,6 @@
 # Advent of Code, Day 11, Part 1
 
-from collections import defaultdict
-from sys import maxsize
-from typing import Set, Tuple
-testInput = '''\
+TEST_INPUT = '''\
 5483143223
 2745854711
 5264556173
@@ -15,23 +12,26 @@ testInput = '''\
 4846848554
 5283751526
 '''
-testResult = 1656
+TEST_RESULT = 1656
 
-def adj(x, y):
-    for i in [-1, 0, 1]:
-        for j in [-1, 0, 1]:
-            if not 0 == i == j:
-                yield x + i, y + j
+STEPS: int = 100
+FLASH_ENERGY = 9
 
-def flash(octopi, flashQueue: Set[Tuple[int, int]]):
-    hasFlashed = set()
+def adj(x: int, y: int) -> list[tuple[int, int]]:
+    return [(x + i, y + j)
+        for i in [-1, 0, 1]
+        for j in [-1, 0, 1]
+        if not 0 == i == j]
+
+def flash(octopi: dict[tuple[int, int], int], flashQueue: set[tuple[int, int]]) -> int:
+    hasFlashed: set[tuple[int, int]] = set()
     while len(flashQueue) > 0:
         oct = flashQueue.pop()
         for adjOct in adj(oct[0], oct[1]):
             if adjOct in octopi:
                 octopi[adjOct] += 1
                 hasFlashed.add(oct)
-                if octopi[adjOct] > 9 and not adjOct in hasFlashed:
+                if octopi[adjOct] > FLASH_ENERGY and not adjOct in hasFlashed:
                     flashQueue.add(adjOct)
 
     for oct in hasFlashed:
@@ -39,27 +39,20 @@ def flash(octopi, flashQueue: Set[Tuple[int, int]]):
 
     return len(hasFlashed)
 
-def solve(input):
+def solve(input: str) -> int:
     octopi = {
         (x, y): int(n)
         for y, row in enumerate(input.splitlines())
         for x, n in enumerate(row)}
-    sum = 0
-    for _ in range(100):
+
+    sum: int = 0
+    for _ in range(STEPS):
         for oct in octopi.keys():
             octopi[oct] += 1
-        sum += flash(octopi, set(oct for oct in octopi.keys() if octopi[oct] > 9))
+        sum += flash(octopi, set(oct for oct in octopi.keys() if octopi[oct] > FLASH_ENERGY))
     return sum
-            
 
-
-
-
-
-
-        
-
-assert solve(testInput) == testResult
+assert solve(TEST_INPUT) == TEST_RESULT
 
 with open('day11/input.txt', 'r') as file:
     print(solve(file.read()))

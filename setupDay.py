@@ -15,15 +15,15 @@ def main():
             file.write(f'''\
 # Advent of Code, Day {day}, Part {part}
 
-testInput = \'\'\'\\
+TEST_INPUT = \'\'\'\\
 
 \'\'\'
-testResult = None
+TEST_RESULT = None
 
 def solve(input):
     pass
 
-assert solve(testInput) == testResult
+assert solve(TEST_INPUT) == TEST_RESULT
 
 with open(\'day{day}/input.txt\', \'r\') as file:
     print(solve(file.read()))

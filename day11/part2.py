@@ -1,9 +1,6 @@
 # Advent of Code, Day 11, Part 2
 
-from typing import Set, Tuple
-
-
-testInput = '''\
+TEST_INPUT = '''\
 5483143223
 2745854711
 5264556173
@@ -15,15 +12,20 @@ testInput = '''\
 4846848554
 5283751526
 '''
-testResult = 195
+TEST_RESULT = 195
 
-def adj(x, y):
-    for i in [-1, 0, 1]:
-        for j in [-1, 0, 1]:
-            if not 0 == i == j:
-                yield x + i, y + j
+MAX_STEPS: int = 1000
+ROWS: int = 10
+COLS: int = 10
+FLASH_ENERGY = 9
 
-def flash(octopi, flashQueue: Set[Tuple[int, int]]):
+def adj(x: int, y: int) -> list[tuple[int, int]]:
+    return [(x + i, y + j)
+        for i in [-1, 0, 1]
+        for j in [-1, 0, 1]
+        if not 0 == i == j]
+
+def flash(octopi, flashQueue: set[tuple[int, int]]):
     hasFlashed = set()
     while len(flashQueue) > 0:
         oct = flashQueue.pop()
@@ -31,7 +33,7 @@ def flash(octopi, flashQueue: Set[Tuple[int, int]]):
             if adjOct in octopi:
                 octopi[adjOct] += 1
                 hasFlashed.add(oct)
-                if octopi[adjOct] > 9 and not adjOct in hasFlashed:
+                if octopi[adjOct] > FLASH_ENERGY and not adjOct in hasFlashed:
                     flashQueue.add(adjOct)   
 
     for oct in hasFlashed:
@@ -44,15 +46,16 @@ def solve(input):
         for y, row in enumerate(input.splitlines())
         for x, n in enumerate(row)}
 
-    for step in range(100000):
-        for y in range(10):
-            for x in range(10):
+    for step in range(MAX_STEPS):
+        for y in range(ROWS):
+            for x in range(COLS):
                 octopi[(x, y)] += 1
         
-        if flash(octopi, set(oct for oct in octopi.keys() if octopi[oct] > 9)) >= 100:
+        if flash(octopi, set(oct for oct in octopi.keys() if octopi[oct] > FLASH_ENERGY)) >= ROWS * COLS:
             return step + 1
+    raise Exception(f'Octupi do not synchronise in {MAX_STEPS} steps.')
 
-assert solve(testInput) == testResult
+assert solve(TEST_INPUT) == TEST_RESULT
 
 with open('day11/input.txt', 'r') as file:
     print(solve(file.read()))
